@@ -1,6 +1,6 @@
 package services
 
-import "github.com/krufyliu/dkvgo/dkvgo-admin/models"
+import "dkvgo-admin/models"
 
 type authService struct {
 	user *models.User

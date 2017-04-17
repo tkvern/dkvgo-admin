@@ -3,7 +3,7 @@ package controllers
 import (
 	"time"
 
-	"github.com/krufyliu/dkvgo/dkvgo-admin/services"
+	"dkvgo-admin/services"
 )
 
 type AuthController struct {

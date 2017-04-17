@@ -12,8 +12,8 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/models"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/services"
+	"dkvgo-admin/models"
+	"dkvgo-admin/services"
 )
 
 type JobsController struct {

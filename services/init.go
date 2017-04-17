@@ -7,7 +7,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/models"
+	"dkvgo-admin/models"
 )
 
 type Page struct {

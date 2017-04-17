@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/models"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/services"
+	"dkvgo-admin/models"
+	"dkvgo-admin/services"
 )
 
 const (

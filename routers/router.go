@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/controllers"
+	"dkvgo-admin/controllers"
 )
 
 func init() {

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/krufyliu/dkvgo/dkvgo-admin/utils"
+	"dkvgo-admin/utils"
 )
 
 type TestController struct {

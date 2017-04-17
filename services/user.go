@@ -3,7 +3,7 @@ package services
 import (
 	"errors"
 	"github.com/astaxie/beego/orm"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/models"
+	"dkvgo-admin/models"
 )
 
 type userService struct {} 

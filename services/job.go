@@ -2,7 +2,7 @@ package services
 
 import (
 	"github.com/astaxie/beego/orm"
-	"github.com/krufyliu/dkvgo/dkvgo-admin/models"
+	"dkvgo-admin/models"
 )
 
 type jobService struct{}

@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/krufyliu/dkvgo/dkvgo-admin/utils"
+	"dkvgo-admin/utils"
 )
 
 // User model

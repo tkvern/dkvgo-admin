@@ -1,1 +1,5 @@
 dkvgo-admin
+*.swp
+*.swo
+*.log
+

@@ -7,7 +7,7 @@ import {getJobStatus, getProccessStatus, getActions} from '../../utils/jobStatus
 
 const confirm = Modal.confirm
 
-function list ({ loading, dataSource, pagination, onPageChange, onDeleteItem, onEditItem, onStop, onResume, isMotion, location }) {
+function list ({ loading, dataSource, pagination, onPageChange, onDeleteItem, onEditItem, onStop, onResume, onReRun, isMotion, location }) {
   const handleMenuClick = (record, e) => {
     if (e.key === 'detail') {
       onEditItem(record)
@@ -20,6 +20,8 @@ function list ({ loading, dataSource, pagination, onPageChange, onDeleteItem, on
       })
     } else if (e.key == 'resume') {
       onResume(record.Id)      
+    } else if(e.key == 'rerun') {
+      onReRun(record.Id)
     } else if (e.key === 'delete') {
       confirm({
         title: '您确定要删除这条记录吗?',

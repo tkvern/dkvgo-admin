@@ -3,7 +3,7 @@ import { getCookie } from './cookie'
 import base64_decode from 'locutus/php/url/base64_decode'
 import {message} from 'antd'
 
-export default function request (url, options) {
+export default function request (url, options, handle_error=true) {
   function getXsrfToken() {
     var xsrf, xsrflist
     xsrf = getCookie('_xsrf')
@@ -26,8 +26,7 @@ export default function request (url, options) {
     // processData: options.method === 'get',
     dataType: options.dataType || 'JSON'
   }).done((data) => {
-    if (data && !data.success) {
-      console.log(data.message)
+    if (data && !data.success && handle_error) {
       message.error(data.message, 5)
     }
     return data

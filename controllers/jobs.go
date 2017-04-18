@@ -10,10 +10,13 @@ import (
 
 	"encoding/json"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	"dkvgo-admin/models"
 	"dkvgo-admin/services"
+	"dkvgo-admin/utils"
+	"path/filepath"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 )
 
 type JobsController struct {
@@ -66,11 +69,18 @@ func (this *JobsController) Post() {
 	valid.Required(job.EnableTop, "EnableTop")
 	valid.Required(job.EnableBottom, "EnableTop")
 	valid.Required(job.SaveDebugImg, "SaveDebugImg")
+	ringRectify := filepath.Join(job.VideoDir, "ring_rectify.xml")
+	cameraSetting := filepath.Join(job.VideoDir, "camera_setting.xml")
+	if existed, _ := utils.PathExists(ringRectify); !existed {
+		valid.SetError("VideoDir", "视频路径下不存在ring_rectify.xml")
+	} else if existed, _ := utils.PathExists(cameraSetting); !existed {
+		valid.SetError("VideoDir", "视频路径下不存在camera_setting.xml")
+	}
 	if startFrame >= endFrame {
 		valid.SetError("StartFrame", "StartFrame必须小于EndFrame")
 	}
 	if valid.HasErrors() {
-		this.ErrorJsonResponse("参数不合符要求", valid.Errors)
+		this.ErrorJsonResponse(utils.ErrorsPack(valid.Errors), nil)
 	}
 	job.EnableBottom = job.EnableTop
 	job.Algorithm = "3D_" + job.CameraType
@@ -94,6 +104,20 @@ func (this *JobsController) Resume() {
 	this.DataJsonResponse(job)
 }
 
+func (this *JobsController) Rerun() {
+	jobId, _ := strconv.Atoi(this.Ctx.Input.Param(":id"))
+	job, err := services.JobService.GetJob(jobId, false)
+	this.CheckError(err)
+	if job.Status != 0x04 && job.Status != 0x06 {
+		this.ShowErrorMsg("当前操作不允许")
+	}
+	job.Status = 0x00
+	job.Operator = this.LoginUser()
+	services.JobService.Update(job, "Status", "Operator")
+	job.ResetState()
+	this.DataJsonResponse(job)
+}
+
 func (this *JobsController) Stop() {
 	jobId, _ := strconv.Atoi(this.Ctx.Input.Param(":id"))
 	job, err := services.JobService.GetJob(jobId, false)
@@ -114,7 +138,7 @@ func (this *JobsController) Stop() {
 		res, err := http.Post(stopURL, "application/json", nil)
 		defer res.Body.Close()
 		if err != nil {
-			this.ShowErrorMsg("操作失败, 请稍后重试")
+			this.ShowErrorMsg("当前服务不可用, 请稍后重试")
 		}
 		if res.StatusCode != 200 {
 			this.ShowErrorMsg("call api: " + res.Status)

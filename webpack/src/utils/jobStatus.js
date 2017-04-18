@@ -39,9 +39,10 @@ module.exports = {
   },
   getActions: function(status) {
     var actions = {
-        detail: { 'key': 'detail', 'text':'详情' },
-        stop: { 'key': 'stop', 'text':'终止' },
-        resume: { 'key': 'resume', 'text':'继续' },
+        detail: { 'key': 'detail', 'text': '详情' },
+        stop: { 'key': 'stop', 'text': '终止' },
+        resume: { 'key': 'resume', 'text': '继续' },
+        rerun: {'key': 'rerun', 'text': '重跑'},
     }
     var targetActions = [actions['detail']]
     switch(status) {
@@ -53,6 +54,7 @@ module.exports = {
     case 4:
     case 6:
         targetActions.push(actions['resume'])
+        targetActions.push(actions['rerun'])
         return targetActions
     default:
         return targetActions

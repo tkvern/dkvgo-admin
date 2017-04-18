@@ -1,8 +1,9 @@
 package services
 
 import (
-	"github.com/astaxie/beego/orm"
 	"dkvgo-admin/models"
+
+	"github.com/astaxie/beego/orm"
 )
 
 type jobService struct{}
@@ -59,6 +60,7 @@ func (this *jobService) GetJob(id int, withState bool) (*models.Job, error) {
 		return nil, err
 	}
 	if withState {
+		job.State = new(models.JobState)
 		err = o.Read(job.State)
 	}
 	return job, err

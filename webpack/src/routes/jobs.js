@@ -55,6 +55,12 @@ function Jobs ({ loading, location, dispatch, jobs }) {
         payload: id
       })
     },
+    onReRun(id) {
+      dispatch({
+        type: 'jobs/rerun',
+        payload: id
+      })
+    },
     onDeleteItem (id) {
       dispatch({
         type: 'jobs/delete',

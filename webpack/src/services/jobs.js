@@ -26,6 +26,12 @@ export async function resume(params) {
   })  
 }
 
+export async function rerun(params) {
+  return request('/api/jobs/' + params.id + '/action/rerun', {
+    method: 'post'
+  })  
+}
+
 export async function remove (params) {
   return request('/api/jobs/' + params.id, {
     method: 'delete',

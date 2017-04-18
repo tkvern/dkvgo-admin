@@ -1,4 +1,4 @@
-import { create, stop, resume, remove, update, query } from '../services/jobs'
+import { create, stop, resume, rerun, remove, update, query } from '../services/jobs'
 import { parse } from 'qs'
 
 export default {
@@ -84,10 +84,10 @@ export default {
       }
     },
     *create ({ payload }, { call, put, select }) {
-      yield put({ type: 'hideModal' })
       const data = yield call(create, payload)
       if (data && data.success) {
-        window.location.reload()
+        yield put({ type: 'hideModal' })
+        yield put({type: 'query'});
       }
     },
     *update ({ payload }, { select, call}) {
@@ -116,6 +116,17 @@ export default {
     },
     *resume({payload}, {call, put}) {
       const data = yield call(resume, {id: payload})      
+      if (data && data.success) {
+        yield put({
+          type: 'updateSuccess',
+          payload: {
+            job: data.data
+          }
+        })
+      }
+    },
+    *rerun({payload}, {call, put}) {
+      const data = yield call(rerun, { id: payload })
       if (data && data.success) {
         yield put({
           type: 'updateSuccess',

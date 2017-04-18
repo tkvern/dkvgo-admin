@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"dkvgo-admin/services"
+
+	"github.com/astaxie/beego/orm"
 )
 
 type AuthController struct {
@@ -24,8 +26,10 @@ func (this *AuthController) Post() {
 		this.ShowErrorMsg("密码不能为空")
 	}
 	user, err := services.UserService.GetUserByEmail(email)
-	this.CheckError(err)
-	if !user.ValidataPassword(password) {
+	if err != orm.ErrNoRows {
+		this.CheckError(err)
+	}
+	if user == nil || !user.ValidataPassword(password) {
 		this.ShowErrorMsg("邮箱不存在或者密码不正确")
 	}
 	this.SetSession("userId", user.Id)

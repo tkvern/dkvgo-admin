@@ -1,9 +1,10 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"dkvgo-admin/models"
 	"dkvgo-admin/services"
+
+	"github.com/astaxie/beego"
 )
 
 const (
@@ -101,7 +102,9 @@ func (this *BaseController) ErrorJsonResponse(msg string, detail interface{}) {
 	out := make(map[string]interface{})
 	out["success"] = MSG_ERR
 	out["message"] = msg
-	out["errors"] = detail
+	if detail != nil {
+		out["errors"] = detail
+	}
 	this.JsonResponse(out)
 }
 
@@ -110,5 +113,9 @@ func (this *BaseController) CheckError(err error) {
 		return
 	}
 	beego.Error(err)
-	this.ShowMsg(err.Error(), MSG_ERR)
+	if beego.AppConfig.String("runmode") == "prod" {
+		this.ShowMsg(err.Error(), MSG_ERR)
+	} else {
+		this.ShowMsg("服务器内部错误", MSG_ERR)
+	}
 }

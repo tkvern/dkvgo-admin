@@ -2,4 +2,5 @@ dkvgo-admin
 *.swp
 *.swo
 *.log
+conf/app.conf
 

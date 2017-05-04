@@ -6,7 +6,8 @@ import createLoading from 'dva-loading'
 const app = dva({
   history: browserHistory,
   onError (error) {
-    console.error('app onError -- ', error)
+    app._store.dispatch({type: 'app/loginFail'})
+    console.error('app onError -- ', app)
   }
 })
 // 2. Plugin

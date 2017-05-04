@@ -24,6 +24,7 @@ func (this *BaseController) Prepare() {
 		}
 	} else {
 		if !this.IsLogin() {
+			//this.Ctx.ResponseWriter.WriteHeader(401)
 			this.ShowErrorMsg("未登录")
 		}
 	}

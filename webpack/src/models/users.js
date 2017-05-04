@@ -63,19 +63,10 @@ export default {
       }
     },
     *create ({ payload }, { call, put }) {
-      yield put({ type: 'hideModal' })
       const data = yield call(create, payload)
       if (data && data.success) {
-        yield put({
-          type: 'querySuccess',
-          payload: {
-            list: data.data,
-            pagination: {
-              total: data.page.total,
-              current: data.page.current
-            }
-          }
-        })
+        yield put({ type: 'hideModal' })
+        yield put({ type: 'query'})
       }
     },
     *update ({ payload }, { select, call, put }) {

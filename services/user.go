@@ -1,12 +1,18 @@
 package services
 
 import (
-	"errors"
-	"github.com/astaxie/beego/orm"
 	"dkvgo-admin/models"
+	"errors"
+
+	"github.com/astaxie/beego/orm"
 )
 
-type userService struct {} 
+type userService struct{}
+
+func (this *userService) Create(u *models.User) error {
+	_, err := o.Insert(u)
+	return err
+}
 
 func (this *userService) GetTotal() (int64, error) {
 	return o.QueryTable(&models.User{}).Count()
@@ -17,12 +23,22 @@ func (this *userService) GetPage(current, pageSize int) (*Page, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Page {Total: total, Current: current, PageSize: pageSize}, nil
+	return &Page{Total: total, Current: current, PageSize: pageSize}, nil
 }
 
 func (this *userService) GetUserById(userId int) (*models.User, error) {
 	user := &models.User{Id: userId}
 	err := o.Read(user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func (this *userService) GetUserByUsername(username string) (*models.User, error) {
+	user := &models.User{}
+	user.Username = username
+	err := o.Read(user, "Username")
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +56,7 @@ func (this *userService) GetUserByEmail(email string) (*models.User, error) {
 }
 
 func (this *userService) GetUserList(page, pageSize int) orm.QuerySeter {
-	offset := (page-1) *pageSize
+	offset := (page - 1) * pageSize
 	if offset < 0 {
 		offset = 0
 	}
@@ -48,7 +64,7 @@ func (this *userService) GetUserList(page, pageSize int) orm.QuerySeter {
 	return qs
 }
 
-func (this *userService) UpdateUser(user *models.User, fields ...string) error{
+func (this *userService) UpdateUser(user *models.User, fields ...string) error {
 	if len(fields) < 1 {
 		return errors.New("更新字段不能为空")
 	}

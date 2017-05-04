@@ -27,7 +27,7 @@ func (this *JobsController) Get() {
 	var jobs []*models.Job
 	page, err := this.GetInt("page", 1)
 	this.CheckError(err)
-	pageSize, err := this.GetInt("size", 10)
+	pageSize, err := this.GetInt("pageSize", 10)
 	this.CheckError(err)
 	qs := services.JobService.GetJobList(page, pageSize)
 	field := this.GetString("field")

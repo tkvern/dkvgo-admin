@@ -17,9 +17,9 @@ export default {
   subscriptions: {
     setup ({dispatch}) {
       dispatch({type: 'queryUser'})
-      window.onresize = function () {
-        dispatch({type: 'changeNavbar'})
-      }
+      // window.onresize = function () {
+      //   dispatch({type: 'changeNavbar'})
+      // }
     }
   },
   effects: {

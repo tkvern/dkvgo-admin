@@ -30,5 +30,7 @@ export default function request (url, options, handle_error=true) {
       message.error(data.message, 5)
     }
     return data
+  }).fail((jqXHR, statusText) => {
+    console.log(statusText)
   })
 }

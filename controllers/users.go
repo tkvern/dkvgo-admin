@@ -1,8 +1,12 @@
 package controllers
 
 import (
+	"dkvgo-admin/forms"
 	"dkvgo-admin/models"
 	"dkvgo-admin/services"
+	"dkvgo-admin/utils"
+
+	"github.com/astaxie/beego/validation"
 )
 
 type UsersController struct {
@@ -27,4 +31,34 @@ func (this *UsersController) Get() {
 	this.CheckError(err)
 	pager, err := services.UserService.GetPage(page, pageSize)
 	this.DataJsonResponseWithPage(users, pager)
+}
+
+func (this *UsersController) Post() {
+	loginUser := this.LoginUser()
+	if !loginUser.IsAdmin() {
+		this.ShowErrorMsg("没有权限")
+	}
+	form := forms.UserCreateForm{
+		Username: this.GetString("Username"),
+		Email:    this.GetString("Email"),
+		Password: this.GetString("Password"),
+	}
+	valid := validation.Validation{}
+	ok, err := valid.Valid(form)
+	if err != nil {
+		this.CheckError(err)
+	}
+	if !ok {
+		this.ErrorJsonResponse(utils.ErrorsPack(valid.Errors), nil)
+	}
+	user := models.User{
+		Username: form.Username,
+		Email:    form.Email,
+		Password: form.Password,
+	}
+	err = services.UserService.Create(&user)
+	if err != nil {
+		this.CheckError(err)
+	}
+	this.DataJsonResponse(user, "user")
 }
